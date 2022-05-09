@@ -1,6 +1,6 @@
 {
   "name": "KindleHelper",
-  "productName": "Electron",
+  "productName": "KindleHelper",
   "private": true,
   "version": "1.0.0",
   "description": "Vite React Electron boilerplate.",
