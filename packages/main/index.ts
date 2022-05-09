@@ -1,8 +1,11 @@
-import { app, BrowserWindow, shell } from 'electron'
+import { app, BrowserWindow, shell, ipcMain } from 'electron'
 import { release } from 'os'
 import { join } from 'path'
+import got from 'got';
 import './samples/electron-store'
 import './samples/npm-esm-packages'
+
+const cheerio = require('cheerio');
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -19,7 +22,12 @@ let win: BrowserWindow | null = null
 
 async function createWindow() {
   win = new BrowserWindow({
+    width: 1000,
+    height: 664,
+    frame: false,
+    titleBarStyle: 'hidden',
     title: 'Main window',
+    resizable: false,
     webPreferences: {
       preload: join(__dirname, '../preload/index.cjs')
     },
@@ -70,3 +78,16 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+ipcMain.on('searchText', async (event, arg) => {
+  console.log('arg', arg);
+  try {
+    const response = await got.get(`http://www.iyd.wang/?s=${arg}`);
+    const $ = cheerio.load(response.body);
+    // const title = $('#main').find('article > .entry-title > a');
+    console.log('title', $);
+  } catch (err) {
+    console.error('error', err);
+  }
+  
+});
