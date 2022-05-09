@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Row, Col, Table, Button } from 'antd';
 import { searchInput } from './search';
 
@@ -27,18 +27,13 @@ const Search = () => {
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'title',
+      key: 'title',
     },
     {
-      title: 'Type',
-      dataIndex: 'type',
-      key: 'type',
-    },
-    {
-      title: 'Size',
-      dataIndex: 'size',
-      key: 'size',
+      title: 'Link',
+      dataIndex: 'link',
+      key: 'link',
     },
     {
       title: 'Action',
@@ -59,6 +54,13 @@ const Search = () => {
     console.log('value', value);
     window.ipcRenderer.send('searchText', value);
   };
+
+  useEffect(() => {
+    window.ipcRenderer.on('searchResult', (event, args) => {
+      console.log('args', args);
+      setDataSource(args);
+    });
+  }, []);
 
   return (
     <Row gutter={12}>

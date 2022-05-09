@@ -1,7 +1,7 @@
 import { app, BrowserWindow, shell, ipcMain } from 'electron'
 import { release } from 'os'
 import { join } from 'path'
-import got from 'got';
+import search from './search';
 import './samples/electron-store'
 import './samples/npm-esm-packages'
 
@@ -23,7 +23,7 @@ let win: BrowserWindow | null = null
 async function createWindow() {
   win = new BrowserWindow({
     width: 1000,
-    height: 664,
+    height: 670,
     frame: false,
     titleBarStyle: 'hidden',
     title: 'Main window',
@@ -82,12 +82,10 @@ app.on('activate', () => {
 ipcMain.on('searchText', async (event, arg) => {
   console.log('arg', arg);
   try {
-    const response = await got.get(`http://www.iyd.wang/?s=${arg}`);
-    const $ = cheerio.load(response.body);
-    // const title = $('#main').find('article > .entry-title > a');
-    console.log('title', $);
+    const response = await search(arg);
+    // console.log('title', response);
+    event.sender.send('searchResult', response);
   } catch (err) {
     console.error('error', err);
   }
-  
 });
