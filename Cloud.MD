@@ -21,9 +21,9 @@
     const fileInfoUrl = `https://webapi.ctfile.com/getfile.php?path=f&f=${fileID}&passcode=${pass}&token=false&r=${r}`;
 
     // 获取文件相关信息
-    const { data, code } = await axios({ url: fileInfoUrl, method: 'GET' });
+    const { data } = await axios({ url: fileInfoUrl, method: 'GET' });
 
-    if (code === 200) {
+    if (data.code === 200) {
         const { userid, file_id, file_chk } = data.file;
         const fileUrl = `https://webapi.ctfile.com/get_file_url.php?uid=${userid}&fid=${file_id}&file_chk=${file_chk}&app=0&acheck=2&rd=${Math.random()}`
         
