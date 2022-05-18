@@ -1,0 +1,15 @@
+.modal-content {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  .book-img {
+    display: flex;
+    max-width: 150px;
+  }
+  .book-btns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}

@@ -1,84 +1,101 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Input, Row, Col, Table, Button } from 'antd';
-import { searchInput } from './search';
-
-// const data = [
-//   { id: '1', name: 'Racing car sprays burning fuel into crowd.', type: 'mobi', size: '10MB' },
-//   { id: '2', name: 'Japanese princess to wed commoner.', type: 'mobi', size: '10MB' },
-//   { id: '3', name: 'Australian walks 100km after outback crash.', type: 'mobi', size: '10MB' },
-//   { id: '4', name: 'Man charged over missing wedding girl.', type: 'mobi', size: '10MB' },
-//   { id: '5', name: 'Los Angeles battles huge wildfires.', type: 'mobi', size: '10MB' },
-//   { id: '11', name: 'Racing car sprays burning fuel into crowd.', type: 'mobi', size: '10MB' },
-//   { id: '22', name: 'Japanese princess to wed commoner.', type: 'mobi', size: '10MB' },
-//   { id: '32', name: 'Australian walks 100km after outback crash.', type: 'mobi', size: '10MB' },
-//   { id: '42', name: 'Man charged over missing wedding girl.', type: 'mobi', size: '10MB' },
-//   { id: '52', name: 'Los Angeles battles huge wildfires.', type: 'mobi', size: '10MB' },
-//   { id: '13', name: 'Racing car sprays burning fuel into crowd.', type: 'mobi', size: '10MB' },
-//   { id: '23', name: 'Japanese princess to wed commoner.', type: 'mobi', size: '10MB' },
-//   { id: '33', name: 'Australian walks 100km after outback crash.', type: 'mobi', size: '10MB' },
-//   { id: '43', name: 'Man charged over missing wedding girl.', type: 'mobi', size: '10MB' },
-//   { id: '53', name: 'Los Angeles battles huge wildfires.', type: 'mobi', size: '10MB' },
-// ]
+import { useToggle } from 'ahooks';
+import Modal from './components/Modal';
+import columns from './columns';
 
 const Search = () => {
   const [value, setValue] = useState('');
   const [dataSource, setDataSource] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setToalaPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [visible, { setLeft, setRight }] = useToggle();
 
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'title',
-      key: 'title',
-    },
-    {
-      title: 'Link',
-      dataIndex: 'link',
-      key: 'link',
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (text: string, record: any) => (
-        <a onClick={() => handleClickDownload(record.id)}>Download</a>
-      ),
-    },
-  ];
+  // 点击下载
+  const handleClickDownload = (recordData: any) => {
+    window.ipcRenderer.send('searchDetail', recordData.link);
+    setRight();
+  };
 
-  const handleClickDownload = (id: string) => {};
-
+  // 监听输入框内容发生改变
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value);
   }
 
+  // 点击翻页
+  const handleChangePage = (pagination: any) => {
+    setLoading(true);
+    setCurrentPage(pagination.current);
+    window.ipcRenderer.send('searchText', { value, currentPage: pagination.current });
+  };
+
+  // 点击搜索
   const handleSearch = () => {
-    console.log('value', value);
-    window.ipcRenderer.send('searchText', value);
+    setLoading(true);
+    setCurrentPage(1);
+    window.ipcRenderer.send('searchText', { value, currentPage });
   };
 
   useEffect(() => {
+    // 返回搜索结果
     window.ipcRenderer.on('searchResult', (event, args) => {
-      console.log('args', args);
-      setDataSource(args);
+      // console.log('args', args);
+      setDataSource(args.data);
+      setToalaPage(args.page);
+      setLoading(false);
     });
   }, []);
 
   return (
-    <Row gutter={12}>
-      <Col span={24}>
-        <Input.Group compact>
-          <Input style={{ width: 'calc(100% - 63px)' }} value={value} onChange={handleChange} placeholder='输入书名进行查询' />
-          <Button type="primary" onClick={handleSearch}>搜索</Button>
-        </Input.Group>
-      </Col>
-      <Col span={24} style={{ marginTop: '10px' }}>
-        <Table
-          rowKey={'id'}
-          columns={columns}
-          size="middle"
-          dataSource={dataSource}
-        />
-      </Col>
-    </Row>
+    <>
+      <Row gutter={12}>
+        <Col span={24}>
+          <Input.Group compact>
+            <Input
+              style={{ width: 'calc(100% - 90px)' }}
+              value={value}
+              placeholder='输入书名进行查询'
+              onChange={handleChange}
+              onPressEnter={handleSearch}
+              allowClear
+            />
+            <Button
+              type="primary"
+              loading={loading}
+              onClick={handleSearch}
+              style={{ width: '91px' }}
+            >
+              搜索
+            </Button>
+          </Input.Group>
+        </Col>
+        <Col span={24} style={{ marginTop: '10px' }}>
+          <Table
+            rowKey={'link'}
+            columns={columns({ handleClickDownload })}
+            size="middle"
+            dataSource={dataSource}
+            onChange={handleChangePage}
+            loading={loading}
+            pagination={{
+              size: 'default',
+              pageSize: 10,
+              current: currentPage,
+              total: totalPage,
+              showTotal: (total: number) => `总共 ${total} 本书`,
+              showSizeChanger: false,
+              showQuickJumper: true,
+            }}
+          />
+        </Col>
+      </Row>
+      <Modal
+        visible={visible}
+        handleOk={() => { }}
+        handleCancel={setLeft}
+      />
+    </>
   )
 }
 

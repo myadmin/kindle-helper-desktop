@@ -9,11 +9,11 @@
     const url = `${api_server}/passcode.php?file_id=${file_id}&folder_id=${folder_id}&userid=${userid}&passcode=${pass}&r=${r}`
     
     // 获取所有的基础数据 
-    const { data } = await axios({
-        url: 'https://webapi.ctfile.com/passcode.php?file_id=532806680&folder_id=0&userid=18694317&passcode=6290&r=0.11188067487366626',
-        method: 'GET',
-        responseType: 'json',
-    });
+    // const { data } = await axios({
+    //     url: 'https://webapi.ctfile.com/passcode.php?file_id=532806680&folder_id=0&userid=18694317&passcode=6290&r=0.11188067487366626',
+    //     method: 'GET',
+    //     responseType: 'json',
+    // });
     
     const fileID = '18694317-580089343-d2bbec'; //文件ID，网址后的东西
     const pass = '526663'; //文件密码

@@ -1,11 +1,10 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron'
-import { release } from 'os'
-import { join } from 'path'
-import search from './search';
+import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { release } from 'os';
+import { join } from 'path';
+import './event';
+
 import './samples/electron-store'
 import './samples/npm-esm-packages'
-
-const cheerio = require('cheerio');
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -77,15 +76,7 @@ app.on('activate', () => {
   } else {
     createWindow()
   }
-})
-
-ipcMain.on('searchText', async (event, arg) => {
-  console.log('arg', arg);
-  try {
-    const response = await search(arg);
-    // console.log('title', response);
-    event.sender.send('searchResult', response);
-  } catch (err) {
-    console.error('error', err);
-  }
 });
+
+
+
