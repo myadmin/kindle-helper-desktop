@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Menu, MenuProps } from 'antd';
-import { PieChartOutlined, DesktopOutlined, } from '@ant-design/icons';
-import { Link, matchRoutes, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import router from '../../router';
+import { Link, matchRoutes, Outlet, useLocation, NavLink } from 'react-router-dom';
+import router from '@/router';
 import './index.css';
 
 const { Content, Sider } = Layout;
@@ -31,8 +30,8 @@ const LayoutPage = () => {
   const [initial, setInitial] = useState(false);
   const location = useLocation();
 
-  const items2: MenuItem[] = router && (router[0]?.children || []).map((item) => {
-    return getItem(<Link to={item.path as string}>{item.title}</Link>, item.path as string, item.icon)
+  const items: MenuItem[] = router && (router[0]?.children || []).map((item) => {
+    return getItem(<NavLink className={({isActive}) => isActive ? 'ant-menu-item-selected' : ''} to={item.path as string}>{item.title}</NavLink>, item.path as string, item.icon)
   });
 
   useEffect(() => {
@@ -63,8 +62,9 @@ const LayoutPage = () => {
           <Menu
             defaultSelectedKeys={defaultSelectedKeys}
             defaultOpenKeys={defaultOpenKeys}
+            selectedKeys={defaultSelectedKeys}
             mode="inline"
-            items={items2}
+            items={items}
           />
         </Sider>
         <Layout style={{ padding: '0 24px 24px' }}>

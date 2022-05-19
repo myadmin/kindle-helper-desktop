@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import { Button, Modal, Space, Spin } from 'antd';
+import { Navigate } from "react-router-dom";
 import { getDownloadUrl } from '@/utils/url';
 import './index.scss';
 
@@ -16,6 +17,8 @@ interface BooksProps {
 
 const ModalComponent = ({ visible, handleOk, handleCancel }: ModalComponentProps) => {
   const [books, setBooks] = useState<BooksProps>();
+  const [shadow, setShadow] = useState(false);
+  const [goPage, setGoPage] = useState(false);
 
   // 点击关闭
   const handleClose = () => {
@@ -29,17 +32,32 @@ const ModalComponent = ({ visible, handleOk, handleCancel }: ModalComponentProps
     const url = getDownloadUrl(item.link);
     const bookId = url[0].indexOf('/f/') > -1 ? url[0].split('/f/')[1] : url[0].split('/file/')[1];
     console.log('url', url, bookId);
-    // 解析当前图书的下载链接，获取真实的下载地址，并进行下载
-    window.ipcRenderer.send('parseBookAndDownload', { 
-      bookPass: url[1] || '',
-      bookId,
-    });
+    setGoPage(true);
+    // setShadow(true);
+    // // 解析当前图书的下载链接，获取真实的下载地址，并进行下载
+    // window.ipcRenderer.send('parseBook', {
+    //   bookPass: url[1] || '',
+    //   bookId,
+    // });
   };
 
   // 副作用
   useEffect(() => {
+    // 监听搜索详情
     window.ipcRenderer.on('searchResultDetail', (event, args) => {
       setBooks(args);
+    });
+  }, []);
+
+  useEffect(() => {
+    window.ipcRenderer.on('downloadInfo', (event, args) => {
+      console.log('args', args);
+      if (args?.code === 200) {
+        handleCancel();
+        window.ipcRenderer.send('downloadBookFile', args);
+        setGoPage(true);
+      }
+      setShadow(false);
     });
   }, []);
 
@@ -68,7 +86,9 @@ const ModalComponent = ({ visible, handleOk, handleCancel }: ModalComponentProps
             </Space>
           </> : <Spin />
         }
+        {shadow && <div className="shadow"><div className="bg" /><Spin /></div>}
       </div>
+      {goPage && <Navigate to='/download' replace={true} />}
     </Modal>
   )
 }

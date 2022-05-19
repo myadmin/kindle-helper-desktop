@@ -22,3 +22,6 @@ ul {
 .ant-layout-sider {
     background-color: #fff !important;
 }
+nav a.active {
+    background-color: #eee;
+}

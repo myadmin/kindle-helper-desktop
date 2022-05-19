@@ -24,13 +24,18 @@ ipcMain.on('searchDetail', async (event, arg) => {
   }
 });
 
-// 获取网盘中图书的下载地址，并开始下载
-ipcMain.on('parseBookAndDownload', async (event, arg) => {
+// 获取网盘中图书的下载地址
+ipcMain.on('parseBook', async (event, arg) => {
   try {
     const response = await parseUrl(arg);
-    console.log('title', response);
-    event.sender.send('downloadSuccess', response);
+    // console.log('title', response);
+    event.sender.send('downloadInfo', response);
   } catch (err) {
     console.error('error', err);
   }
+});
+
+// 新开一个隐形的窗口，并进行图书下载
+ipcMain.on('downloadBookFile', async (event, arg) => {
+  console.log('arg', arg);
 });

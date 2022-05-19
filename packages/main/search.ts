@@ -103,8 +103,7 @@ const parseUrl = async ({
                 // 获取文件下载地址
                 const { data: resData } = await axios.get(fileUrl);
                 // console.log('resData', resData);
-                await downloadBook(resData);
-                return resolve(true);
+                return resolve(resData);
             }
         } catch (err) {
             console.error(err);
