@@ -4,6 +4,8 @@
 
 [千秋书在](https://www.qqszz.com/)
 
+[搜书网站](https://bks.thefuture.top/)
+
 [城通网盘API的链接研究](https://blog.csdn.net/Ceyase/article/details/122683209)
 
 ```
