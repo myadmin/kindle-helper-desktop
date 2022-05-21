@@ -81,9 +81,10 @@ const searchDetail = async (link: string) => {
  * @param param0
  */
 const parseUrl = async ({
-    bookPass: pass = '526663',
+    bookPass: pass,
     bookId: fileID,
 }: BookDataProps) => {
+    console.log('pass', pass)
     // const fileID = '18694317-580089343-d2bbec'; //文件ID，网址后的东西
     // const pass = '526663'; //文件密码
     const r = Math.random(); //随机一个小于1的小数
@@ -99,7 +100,8 @@ const parseUrl = async ({
             if (data.code === 200) {
                 const { userid, file_id, file_chk } = data.file;
                 // 获取文件真实路径
-                const fileUrl = `${baseUrl}/get_file_url.php?uid=${userid}&fid=${file_id}&file_chk=${file_chk}&mb=0&app=0&acheck=1&rd=${r}`;
+                const fileUrl = `${baseUrl}/get_file_url.php?uid=${userid}&fid=${file_id}&file_chk=${file_chk}&folder_id=0&mb=0&app=0&acheck=1&rd=${r}`;
+                // console.log('fileUrl', fileUrl);
                 // 获取文件下载地址
                 const { data: resData } = await axios.get(fileUrl);
                 // console.log('resData', resData);
@@ -109,21 +111,6 @@ const parseUrl = async ({
             console.error(err);
             return reject(err);
         }
-    });
-};
-
-/**
- * 下载图书
- * @param param0
- */
-const downloadBook = ({
-    downurl,
-    code,
-    file_name,
-    file_size,
-}: DownloadBookProps) => {
-    return new Promise((resolve, reject) => {
-        console.log('xxxxx====', downurl, code, file_name, file_size);
     });
 };
 

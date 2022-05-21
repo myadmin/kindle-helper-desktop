@@ -1,6 +1,6 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { Button, Modal, Space, Spin } from 'antd';
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getDownloadUrl } from '@/utils/url';
 import './index.scss';
 
@@ -16,9 +16,10 @@ interface BooksProps {
 }
 
 const ModalComponent = ({ visible, handleOk, handleCancel }: ModalComponentProps) => {
+  const navigate = useNavigate();
   const [books, setBooks] = useState<BooksProps>();
   const [shadow, setShadow] = useState(false);
-  const [goPage, setGoPage] = useState(false);
+  const currentBookId = useRef('');
 
   // 点击关闭
   const handleClose = () => {
@@ -32,13 +33,14 @@ const ModalComponent = ({ visible, handleOk, handleCancel }: ModalComponentProps
     const url = getDownloadUrl(item.link);
     const bookId = url[0].indexOf('/f/') > -1 ? url[0].split('/f/')[1] : url[0].split('/file/')[1];
     console.log('url', url, bookId);
-    setGoPage(true);
-    // setShadow(true);
+    // setGoPage(true);
+    currentBookId.current = bookId;
+    setShadow(true);
     // // 解析当前图书的下载链接，获取真实的下载地址，并进行下载
-    // window.ipcRenderer.send('parseBook', {
-    //   bookPass: url[1] || '',
-    //   bookId,
-    // });
+    window.ipcRenderer.send('parseBook', {
+      bookPass: url[1] || '',
+      bookId,
+    });
   };
 
   // 副作用
@@ -50,12 +52,19 @@ const ModalComponent = ({ visible, handleOk, handleCancel }: ModalComponentProps
   }, []);
 
   useEffect(() => {
+    // 获取下载信息
     window.ipcRenderer.on('downloadInfo', (event, args) => {
-      console.log('args', args);
+      // console.log('args', args);
       if (args?.code === 200) {
         handleCancel();
-        window.ipcRenderer.send('downloadBookFile', args);
-        setGoPage(true);
+        // window.ipcRenderer.send('downloadBookFile', args);
+        // setGoPage(true);
+        // console.log('args', args);
+        // 跳转页面
+        navigate('/download', {
+          state: {...args, bookId: currentBookId.current},
+          replace: true
+        });
       }
       setShadow(false);
     });
@@ -88,7 +97,7 @@ const ModalComponent = ({ visible, handleOk, handleCancel }: ModalComponentProps
         }
         {shadow && <div className="shadow"><div className="bg" /><Spin /></div>}
       </div>
-      {goPage && <Navigate to='/download' replace={true} />}
+      {/* {goPage && <Navigate to='/download' replace={true} />} */}
     </Modal>
   )
 }

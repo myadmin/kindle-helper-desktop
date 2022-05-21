@@ -15,6 +15,7 @@
     "node": ">=14.17.0"
   },
   "dependencies": {
+    "dayjs": "^1.11.2",
     "electron-store": "^8.0.1"
   },
   "devDependencies": {
@@ -26,9 +27,11 @@
     "axios": "^0.27.2",
     "cheerio": "^1.0.0-rc.10",
     "download": "^8.0.0",
+    "download-file-with-progressbar": "^1.2.3",
     "electron": "18.0.3",
     "electron-builder": "^23.0.3",
     "execa": "^6.1.0",
+    "fs-extra": "^10.1.0",
     "got": "^12.0.4",
     "progress-download": "^1.0.4",
     "react": "^18.0.0",

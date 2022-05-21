@@ -30,7 +30,7 @@ const router: RouterProps[] = [
       { path: '/download', title: '下载', element: lazyLoad(<Download />), icon: <DesktopOutlined /> },
       { path: '/send', title: '发送', element: lazyLoad(<Send />), icon: <SendOutlined /> },
       { path: '/setting', title: '设置', element: lazyLoad(<Setting />), icon: <SettingOutlined /> },
-      // { path: '/', element: <Navigate to='/search' replace /> }
+      { path: '/', element: <Navigate to='/search' replace /> }
     ]
   }
 ];
