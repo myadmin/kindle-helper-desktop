@@ -1,5 +1,5 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
-import { Button, Modal, Space, Spin } from 'antd';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { Button, message, Modal, Space, Spin } from 'antd';
 import { useNavigate } from "react-router-dom";
 import { getDownloadUrl } from '@/utils/url';
 import './index.scss';
@@ -28,7 +28,7 @@ const ModalComponent = ({ visible, handleOk, handleCancel }: ModalComponentProps
   };
 
   // 点击下载对应格式的图书，需要获取到图书的链接
-  const handleDownload = (item: Record<string, any>) => {
+  const handleDownload = useCallback((item: Record<string, any>) => {
     // console.log('item', item);
     const url = getDownloadUrl(item.link);
     const bookId = url[0].indexOf('/f/') > -1 ? url[0].split('/f/')[1] : url[0].split('/file/')[1];
@@ -41,7 +41,7 @@ const ModalComponent = ({ visible, handleOk, handleCancel }: ModalComponentProps
       bookPass: url[1] || '',
       bookId,
     });
-  };
+  }, []);
 
   // 副作用
   useEffect(() => {
@@ -49,22 +49,21 @@ const ModalComponent = ({ visible, handleOk, handleCancel }: ModalComponentProps
     window.ipcRenderer.on('searchResultDetail', (event, args) => {
       setBooks(args);
     });
-  }, []);
+  }, [books]);
 
   useEffect(() => {
     // 获取下载信息
     window.ipcRenderer.on('downloadInfo', (event, args) => {
-      // console.log('args', args);
+      console.log('args', args);
       if (args?.code === 200) {
         handleCancel();
-        // window.ipcRenderer.send('downloadBookFile', args);
-        // setGoPage(true);
-        // console.log('args', args);
         // 跳转页面
         navigate('/download', {
-          state: {...args, bookId: currentBookId.current},
+          state: { ...args, bookId: currentBookId.current },
           replace: true
         });
+      } else {
+        message.error(args?.message);
       }
       setShadow(false);
     });

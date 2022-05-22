@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import { Layout, Menu, MenuProps } from 'antd';
-import { Link, matchRoutes, Outlet, useLocation, NavLink } from 'react-router-dom';
+import { matchRoutes, Outlet, useLocation, NavLink } from 'react-router-dom';
 import router from '@/router';
 import './index.css';
 
@@ -30,9 +30,11 @@ const LayoutPage = () => {
   const [initial, setInitial] = useState(false);
   const location = useLocation();
 
-  const items: MenuItem[] = router && (router[0]?.children || []).map((item) => {
-    return getItem(<NavLink className={({isActive}) => isActive ? 'ant-menu-item-selected' : ''} to={item.path as string}>{item.title}</NavLink>, item.path as string, item.icon)
-  });
+  const items: MenuItem[] = useMemo(() => {
+    return router && (router[0]?.children || []).map((item) => {
+      return getItem(<NavLink className={({ isActive }) => isActive ? 'ant-menu-item-selected' : ''} to={item.path as string}>{item.title}</NavLink>, item.path as string, item.icon)
+    });
+  }, []);
 
   useEffect(() => {
     const routes = matchRoutes(router, { pathname: location.pathname });
@@ -49,7 +51,7 @@ const LayoutPage = () => {
     setSelectKey(pathArr);
     setDefaultOpenKeys(pathArr);
     setInitial(true);
-  }, [location.pathname]);
+  }, [location]);
 
   if (!initial) {
     return null;
@@ -84,4 +86,4 @@ const LayoutPage = () => {
   )
 }
 
-export default LayoutPage;
+export default memo(LayoutPage);

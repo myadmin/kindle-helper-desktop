@@ -21,7 +21,9 @@ const search = async ({
 }) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const res = await superagent.get(`${searchUrl}/page/${currentPage}/?s=${encodeURI(value)}`);
+            const res = await superagent.get(
+                `${searchUrl}/page/${currentPage}/?s=${encodeURI(value)}`
+            );
             const $ = cheerio.load(res.text);
             const breadcrumb = $('.breadcrumb').text();
             const page = breadcrumb.match(/\d+/g)[0];
@@ -84,19 +86,19 @@ const parseUrl = async ({
     bookPass: pass,
     bookId: fileID,
 }: BookDataProps) => {
-    console.log('pass', pass)
+    console.log('pass', pass);
     // const fileID = '18694317-580089343-d2bbec'; //文件ID，网址后的东西
     // const pass = '526663'; //文件密码
     const r = Math.random(); //随机一个小于1的小数
     const fileInfoUrl = `${baseUrl}/getfile.php?path=${
         pass ? 'f' : 'file'
     }&f=${fileID}&passcode=${pass}&token=false&r=${r}`;
-    // console.log('fileInfoUrl', fileInfoUrl);
+    console.log('fileInfoUrl', fileInfoUrl);
     return new Promise(async (resolve, reject) => {
         try {
             // 获取文件相关信息
             const { data } = await axios({ url: fileInfoUrl, method: 'GET' });
-            // console.log('data', data.code, data.file);
+            console.log('data', data.code, data.file);
             if (data.code === 200) {
                 const { userid, file_id, file_chk } = data.file;
                 // 获取文件真实路径
@@ -106,6 +108,8 @@ const parseUrl = async ({
                 const { data: resData } = await axios.get(fileUrl);
                 // console.log('resData', resData);
                 return resolve(resData);
+            } else {
+                return resolve({ code: data.file.code, message: data.file.message });
             }
         } catch (err) {
             console.error(err);
