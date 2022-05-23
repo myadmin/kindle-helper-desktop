@@ -6,6 +6,8 @@
 
 [搜书网站](https://bks.thefuture.top/)
 
+[获取城通网盘一次性直连地址](https://github.com/qinlili23333/ctfileGet)
+
 [城通网盘API的链接研究](https://blog.csdn.net/Ceyase/article/details/122683209)
 
 ```
