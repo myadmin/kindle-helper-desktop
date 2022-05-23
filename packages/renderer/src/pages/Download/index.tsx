@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 /**
@@ -13,7 +13,7 @@ const Download = () => {
   useEffect(() => {
     // console.log('location', location);
     // 监听页面跳转获取到的数据，给主进程发起下载通知
-    if (location?.state && location?.state?.code === 200) {
+    if (location?.state && location?.state?.success) {
       // 下载文件
       window.ipcRenderer.send('downloadBookFile', location?.state);
     }
@@ -22,7 +22,7 @@ const Download = () => {
   useEffect(() => {
     // 监听下载进度
     window.ipcRenderer.on('downloadProgress', (event, args: any) => {
-      console.log('args', args.progress);
+      // console.log('args', args.progress);
       let allBook: any = [].concat(books as any);
       const filter = allBook.filter((book: any) => book.id !== args.bookId);
       if (!filter.length) {

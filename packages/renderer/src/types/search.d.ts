@@ -13,7 +13,7 @@ interface BookDataProps {
   bookName: string; 
   bookUrl: string; 
   bookId: string;
-  bookPass?: string;
+  bookPass?: number;
 }
 
 interface DownloadBookProps {

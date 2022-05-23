@@ -1,11 +1,11 @@
 const superagent = require('superagent');
 const cheerio = require('cheerio');
-const axios = require('axios').default;
+import { ctfile } from './utils/ctget';
 
 // 图书搜索
 const searchUrl = `https://www.iyd.wang`;
 // 网盘地址
-const baseUrl = `https://webapi.ctfile.com`;
+// const baseUrl = `https://webapi.ctfile.com`;
 
 /**
  * 搜索图书列表
@@ -83,34 +83,39 @@ const searchDetail = async (link: string) => {
  * @param param0
  */
 const parseUrl = async ({
-    bookPass: pass,
+    bookPass,
     bookId: fileID,
 }: BookDataProps) => {
-    console.log('pass', pass);
+    // console.log('pass', pass);
     // const fileID = '18694317-580089343-d2bbec'; //文件ID，网址后的东西
-    // const pass = '526663'; //文件密码
-    const r = Math.random(); //随机一个小于1的小数
-    const fileInfoUrl = `${baseUrl}/getfile.php?path=${
-        pass ? 'f' : 'file'
-    }&f=${fileID}&passcode=${pass}&token=false&r=${r}`;
-    console.log('fileInfoUrl', fileInfoUrl);
+    const pass = 526663; //文件密码
+    // const r = Math.random(); //随机一个小于1的小数
+    // const fileInfoUrl = `${baseUrl}/getfile.php?path=${
+    //     pass ? 'f' : 'file'
+    // }&f=${fileID}&passcode=${pass}&token=false&r=${r}`;
+    // console.log('fileInfoUrl', fileInfoUrl);
+    
     return new Promise(async (resolve, reject) => {
         try {
             // 获取文件相关信息
-            const { data } = await axios({ url: fileInfoUrl, method: 'GET' });
-            console.log('data', data.code, data.file);
-            if (data.code === 200) {
-                const { userid, file_id, file_chk } = data.file;
-                // 获取文件真实路径
-                const fileUrl = `${baseUrl}/get_file_url.php?uid=${userid}&fid=${file_id}&file_chk=${file_chk}&folder_id=0&mb=0&app=0&acheck=1&rd=${r}`;
-                // console.log('fileUrl', fileUrl);
-                // 获取文件下载地址
-                const { data: resData } = await axios.get(fileUrl);
-                // console.log('resData', resData);
-                return resolve(resData);
-            } else {
-                return resolve({ code: data.file.code, message: data.file.message });
-            }
+            // const { data } = await axios({ url: fileInfoUrl, method: 'GET' });
+            // console.log('data', data.code, data.file);
+            // if (data.code === 200) {
+            //     const { userid, file_id, file_chk } = data.file;
+            //     // 获取文件真实路径
+            //     const fileUrl = `${baseUrl}/get_file_url.php?uid=${userid}&fid=${file_id}&file_chk=${file_chk}&folder_id=0&mb=0&app=0&acheck=1&rd=${r}`;
+            //     // console.log('fileUrl', fileUrl);
+            //     // 获取文件下载地址
+            //     const { data: resData } = await axios.get(fileUrl);
+            //     // console.log('resData', resData);
+            //     return resolve(resData);
+            // } else {
+            //     return resolve({ code: data.file.code, message: data.file.message });
+            // }
+            // console.log('fileID', fileID);
+            const data = await ctfile.getByID(fileID, pass);
+            // console.log('data', data);
+            return resolve(data);
         } catch (err) {
             console.error(err);
             return reject(err);

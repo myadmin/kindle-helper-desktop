@@ -43,7 +43,7 @@ ipcMain.on('parseBook', async (event, arg) => {
 // 新开一个隐形的窗口，并进行图书下载
 ipcMain.on('downloadBookFile', async (event, arg) => {
     // console.log('arg', arg);
-    const { downurl: url, bookId, file_name: filename, file_size: filesize } = arg;
+    const { link: url, bookId, name: filename, size: filesize } = arg;
     const currentDay = dayjs().format('YYYY-MM-DD');
     const filePath = path.join(__dirname, `../../download/`, currentDay);
     fse.ensureDirSync(filePath);
