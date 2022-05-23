@@ -4,7 +4,9 @@
 
 [千秋书在](https://www.qqszz.com/)
 
-[搜书网站](https://bks.thefuture.top/)
+[搜书网站-蓝奏](https://bks.thefuture.top/)
+
+[蓝奏云直链解析](https://github.com/5ime/Lanzou_API)(https://tenapi.cn/lanzou/?url=https://www.lanzou.com/i5tmcud)
 
 [获取城通网盘一次性直连地址](https://github.com/qinlili23333/ctfileGet)
 
