@@ -8,7 +8,7 @@
 
 [蓝奏云直链解析](https://github.com/5ime/Lanzou_API)(https://tenapi.cn/lanzou/?url=https://www.lanzou.com/i5tmcud)
 
-[获取城通网盘一次性直连地址](https://github.com/qinlili23333/ctfileGet)
+[获取城通网盘一次性直连地址](https://github.com/qinlili23333/ctfileGet)(https://ctfile.qinlili.bid/button)
 
 [城通网盘API的链接研究](https://blog.csdn.net/Ceyase/article/details/122683209)
 
