@@ -72,7 +72,7 @@ const searchDetail = async (link: string) => {
             // console.log('array', array);
             return resolve({ data: array, src: imgSrc });
         } catch (err) {
-            console.error(err);
+            // console.error(err);
             return reject(err);
         }
     });

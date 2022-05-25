@@ -15,10 +15,3 @@ interface BookDataProps {
   bookId: string;
   bookPass?: number;
 }
-
-interface DownloadBookProps {
-  downurl: string; 
-  code: number;
-  file_size: number;
-  file_name: string; 
-}

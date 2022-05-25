@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron';
+import { ipcMain, shell } from 'electron';
 import path from 'path';
 import dayjs from 'dayjs';
 import { search, searchDetail, parseUrl } from './search';
@@ -45,7 +45,8 @@ ipcMain.on('downloadBookFile', async (event, arg) => {
     // console.log('arg', arg);
     const { link: url, bookId, name: filename, size: filesize } = arg;
     const currentDay = dayjs().format('YYYY-MM-DD');
-    const filePath = path.join(__dirname, `../../download/`, currentDay);
+    const dirPath = path.join(__dirname, `../../download/`);
+    const filePath = path.join(dirPath, currentDay);
     fse.ensureDirSync(filePath);
 
     // TODO
@@ -55,12 +56,12 @@ ipcMain.on('downloadBookFile', async (event, arg) => {
     const option = {
         filename,
         dir: filePath,
-        onDone: (info: any) => {
+        onDone: () => {
             // console.log('done', info);
             event.sender.send('downloadDone', {
                 bookId,
                 done: true,
-                path: info.path,
+                path: filePath
             });
         },
         onError: (err: any) => {
@@ -74,8 +75,14 @@ ipcMain.on('downloadBookFile', async (event, arg) => {
                 progress,
                 filename,
                 filesize,
+                dirPath,
             });
         },
     };
     dl(url, option);
+});
+
+// 打开文件所在位置
+ipcMain.on('openFilePath', async (event, args) => {
+    shell.openPath(args);
 });

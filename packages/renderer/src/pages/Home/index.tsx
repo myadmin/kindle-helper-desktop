@@ -45,6 +45,10 @@ const Search = () => {
       setToalaPage(args.page);
       setLoading(false);
     });
+
+    return () => {
+      window.ipcRenderer.removeAllListeners('searchResult');
+    };
   }, []);
 
   return (

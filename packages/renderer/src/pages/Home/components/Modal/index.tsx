@@ -49,6 +49,10 @@ const ModalComponent = ({ visible, handleOk, handleCancel }: ModalComponentProps
     window.ipcRenderer.on('searchResultDetail', (event, args) => {
       setBooks(args);
     });
+
+    return () => {
+      window.ipcRenderer.removeAllListeners('searchResultDetail');
+    };
   }, [books]);
 
   useEffect(() => {
@@ -67,6 +71,10 @@ const ModalComponent = ({ visible, handleOk, handleCancel }: ModalComponentProps
       }
       setShadow(false);
     });
+
+    return () => {
+      window.ipcRenderer.removeAllListeners('downloadInfo');
+    };
   }, []);
 
   return (

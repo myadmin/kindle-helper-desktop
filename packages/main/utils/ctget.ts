@@ -37,6 +37,7 @@ export const ctfile = {
                 },
             }
         );
+        // console.log('data1111', data);
         if (data.code == 200) {
             const { data: jsonText2 } = await axios(
                 'https://webapi.ctfile.com/get_file_url.php?uid=' +
@@ -45,7 +46,8 @@ export const ctfile = {
                     data.file.file_id +
                     '&file_chk=' +
                     data.file.file_chk +
-                    '&app=0&acheck=2&rd=' +
+                    // '&app=0&acheck=2&rd=' +
+                    '&folder_id=0&mb=0&app=0&acheck=1&rd=' +
                     Math.random(),
                 {
                     headers: {
@@ -54,6 +56,7 @@ export const ctfile = {
                     },
                 }
             );
+            // console.log('jsonText2', jsonText2);
             if (jsonText2.code == 200) {
                 return {
                     success: true,
