@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron';
+import { dialog, ipcMain, shell } from 'electron';
 import path from 'path';
 import dayjs from 'dayjs';
 import { search, searchDetail, parseUrl } from './search';
@@ -43,9 +43,10 @@ ipcMain.on('parseBook', async (event, arg) => {
 // 新开一个隐形的窗口，并进行图书下载
 ipcMain.on('downloadBookFile', async (event, arg) => {
     // console.log('arg', arg);
-    const { downurl: url, bookId, file_name: filename, file_size: filesize } = arg;
+    const { link: url, bookId, name: filename, size: filesize } = arg;
     const currentDay = dayjs().format('YYYY-MM-DD');
-    const filePath = path.join(__dirname, `../../download/`, currentDay);
+    const dirPath = path.join(__dirname, `../../download/`);
+    const filePath = path.join(dirPath, currentDay);
     fse.ensureDirSync(filePath);
 
     // TODO
@@ -55,12 +56,13 @@ ipcMain.on('downloadBookFile', async (event, arg) => {
     const option = {
         filename,
         dir: filePath,
-        onDone: (info: any) => {
+        onDone: () => {
             // console.log('done', info);
             event.sender.send('downloadDone', {
                 bookId,
                 done: true,
-                path: info.path,
+                path: filePath,
+                current: currentDay,
             });
         },
         onError: (err: any) => {
@@ -74,8 +76,27 @@ ipcMain.on('downloadBookFile', async (event, arg) => {
                 progress,
                 filename,
                 filesize,
+                dirPath,
             });
         },
     };
     dl(url, option);
+});
+
+// 打开文件所在位置
+ipcMain.on('openFilePath', async (event, args) => {
+    shell.openPath(args);
+});
+
+// 打开本地存储路径
+ipcMain.on('openDir', async (event, args) => {
+    dialog
+        .showOpenDialog({
+            defaultPath: args,
+            properties: ['openFile', 'openDirectory'],
+        })
+        .then((res) => {
+            // console.log('res', res);
+            event.sender.send('changeNewDir', res.filePaths);
+        });
 });

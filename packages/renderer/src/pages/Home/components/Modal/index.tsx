@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Button, message, Modal, Space, Spin } from 'antd';
 import { useNavigate } from "react-router-dom";
 import { getDownloadUrl } from '@/utils/url';
@@ -49,13 +49,17 @@ const ModalComponent = ({ visible, handleOk, handleCancel }: ModalComponentProps
     window.ipcRenderer.on('searchResultDetail', (event, args) => {
       setBooks(args);
     });
+
+    return () => {
+      window.ipcRenderer.removeAllListeners('searchResultDetail');
+    };
   }, [books]);
 
   useEffect(() => {
     // 获取下载信息
     window.ipcRenderer.on('downloadInfo', (event, args) => {
-      console.log('args', args);
-      if (args?.code === 200) {
+      // console.log('args', args);
+      if (args?.success) {
         handleCancel();
         // 跳转页面
         navigate('/download', {
@@ -67,6 +71,10 @@ const ModalComponent = ({ visible, handleOk, handleCancel }: ModalComponentProps
       }
       setShadow(false);
     });
+
+    return () => {
+      window.ipcRenderer.removeAllListeners('downloadInfo');
+    };
   }, []);
 
   return (
