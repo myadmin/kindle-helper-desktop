@@ -1,5 +1,7 @@
-// Usage of 'electron-store'
-const store = {
+/**
+ * 数据存储
+ */
+export const store = {
   async get(key: string) {
     const { invoke } = window.ipcRenderer
     let value = await invoke('electron-store', 'get', key)
@@ -21,11 +23,3 @@ const store = {
     }
   },
 };
-
-(async () => {
-  // await store.set('Date.now', Date.now())
-  // console.log('electron-store ->', 'Date.now:', await store.get('Date.now'))
-  // console.log('electron-store ->', 'path:', await window.ipcRenderer.invoke('electron-store', 'path'))
-})();
-
-export { }

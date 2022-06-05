@@ -1,6 +1,7 @@
 import { app, BrowserWindow, shell } from 'electron';
 import { release } from 'os';
 import { join } from 'path';
+import Store from 'electron-store'
 import './event';
 
 import './samples/electron-store'
@@ -18,6 +19,8 @@ if (!app.requestSingleInstanceLock()) {
 }
 
 let win: BrowserWindow | null = null
+
+const store = new Store();
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -39,7 +42,13 @@ async function createWindow() {
     const url = `http://${process.env['VITE_DEV_SERVER_HOST']}:${process.env['VITE_DEV_SERVER_PORT']}`
 
     win.loadURL(url)
-    // win.webContents.openDevTools()
+    win.webContents.openDevTools()
+  }
+
+  // 保存图书文件存储位置
+  const dirPath = join(__dirname, `../../download/`);
+  if (!store.get('downloadPath')) {
+    store.set('downloadPath', dirPath);
   }
 
   // Test active push message to Renderer-process

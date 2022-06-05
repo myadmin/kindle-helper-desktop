@@ -1,4 +1,4 @@
-import { ipcMain, shell } from 'electron';
+import { dialog, ipcMain, shell } from 'electron';
 import path from 'path';
 import dayjs from 'dayjs';
 import { search, searchDetail, parseUrl } from './search';
@@ -61,7 +61,8 @@ ipcMain.on('downloadBookFile', async (event, arg) => {
             event.sender.send('downloadDone', {
                 bookId,
                 done: true,
-                path: filePath
+                path: filePath,
+                current: currentDay,
             });
         },
         onError: (err: any) => {
@@ -85,4 +86,17 @@ ipcMain.on('downloadBookFile', async (event, arg) => {
 // 打开文件所在位置
 ipcMain.on('openFilePath', async (event, args) => {
     shell.openPath(args);
+});
+
+// 打开本地存储路径
+ipcMain.on('openDir', async (event, args) => {
+    dialog
+        .showOpenDialog({
+            defaultPath: args,
+            properties: ['openFile', 'openDirectory'],
+        })
+        .then((res) => {
+            // console.log('res', res);
+            event.sender.send('changeNewDir', res.filePaths);
+        });
 });

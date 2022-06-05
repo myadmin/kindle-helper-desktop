@@ -37,7 +37,7 @@ export const ctfile = {
                 },
             }
         );
-        // console.log('data1111', data);
+        console.log('data1111', data);
         if (data.code == 200) {
             const { data: jsonText2 } = await axios(
                 'https://webapi.ctfile.com/get_file_url.php?uid=' +
@@ -56,7 +56,7 @@ export const ctfile = {
                     },
                 }
             );
-            // console.log('jsonText2', jsonText2);
+            console.log('jsonText2', jsonText2);
             if (jsonText2.code == 200) {
                 return {
                     success: true,

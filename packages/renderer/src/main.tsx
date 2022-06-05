@@ -14,4 +14,4 @@ root.render(
   </HashRouter>
 )
 
-window.removeLoading()
+window.removeLoading();
