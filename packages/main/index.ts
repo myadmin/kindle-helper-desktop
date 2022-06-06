@@ -26,8 +26,6 @@ async function createWindow() {
   win = new BrowserWindow({
     width: 1000,
     height: 670,
-    frame: false,
-    titleBarStyle: 'hidden',
     title: 'Main window',
     resizable: false,
     webPreferences: {

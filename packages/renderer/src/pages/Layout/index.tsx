@@ -69,11 +69,11 @@ const LayoutPage = () => {
             items={items}
           />
         </Sider>
-        <Layout style={{ padding: '0 24px 24px' }}>
+        <Layout style={{ padding: '0 10px 10px' }}>
           <Content
             className="site-layout-background"
             style={{
-              padding: 24,
+              padding: '16px 10px 10px',
               margin: 0,
               minHeight: 280,
             }}

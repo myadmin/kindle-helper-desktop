@@ -67,7 +67,7 @@ const ModalComponent = ({ visible, handleOk, handleCancel }: ModalComponentProps
           replace: true
         });
       } else {
-        message.error(args?.message);
+        message.error(args?.errormsg);
       }
       setShadow(false);
     });
