@@ -17,7 +17,7 @@ ul {
 }
 
 .ant-layout {
-    height: calc(100vh - 22px);
+    height: 100vh;
 }
 .ant-layout-sider {
     background-color: #fff !important;

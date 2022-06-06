@@ -78,7 +78,7 @@ const Search = () => {
           <Table
             rowKey={'link'}
             columns={columns({ handleClickDownload })}
-            size="middle"
+            size="small"
             dataSource={dataSource}
             onChange={handleChangePage}
             loading={loading}

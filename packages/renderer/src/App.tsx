@@ -10,7 +10,6 @@ const App: FC = () => {
 
     return (
         <div className={styles.app}>
-            <header className={styles.appHeader} />
             {element}
         </div>
     )

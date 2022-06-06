@@ -1,5 +1,5 @@
 import { Tabs } from 'antd';
-import SendEmail from './components/sendEmail';
+import SendEmail from './components/SendEmail';
 // import ReceiveEmail from './components/ReceiveEmail';
 import LocalStorage from './components/LocalStorage';
 
