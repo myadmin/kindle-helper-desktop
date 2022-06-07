@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
-import { Layout, Menu, MenuProps } from 'antd';
+import { Layout, Menu, MenuProps, message } from 'antd';
 import { matchRoutes, Outlet, useLocation, NavLink } from 'react-router-dom';
 import router from '@/router';
 import './index.css';
@@ -38,7 +38,7 @@ const LayoutPage = () => {
 
   useEffect(() => {
     const routes = matchRoutes(router, { pathname: location.pathname });
-    console.log('routes', routes, location.pathname);
+    // console.log('routes', routes, location.pathname);
     const pathArr: string[] = [];
     if (routes && routes.length) {
       routes.forEach(item => {
@@ -53,6 +53,21 @@ const LayoutPage = () => {
     setInitial(true);
   }, [location]);
 
+
+  useEffect(() => {
+    window.ipcRenderer.on('sendFileSuccess', (event, args) => {
+      if (args.code === 200) {
+        message.success('发送成功');
+      } else {
+        message.error(`发送失败: ${args.message}`)
+      }
+    });
+
+    return () => {
+      window.ipcRenderer.removeAllListeners('sendFileSuccess');
+    };
+  }, []);
+
   if (!initial) {
     return null;
   }
@@ -60,7 +75,7 @@ const LayoutPage = () => {
   return (
     <Layout>
       <Layout>
-        <Sider width={240} className="site-layout-background">
+        <Sider width={200} className="site-layout-background">
           <Menu
             defaultSelectedKeys={defaultSelectedKeys}
             defaultOpenKeys={defaultOpenKeys}
