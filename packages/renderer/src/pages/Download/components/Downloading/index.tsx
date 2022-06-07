@@ -44,12 +44,16 @@ const Downloading = () => {
   useEffect(() => {
     // 监听文件是否下载完毕
     window.ipcRenderer.on('downloadDone', async (event, args) => {
+      // console.log('args', args);
       let allBook: any = [].concat(bookList.current as any);
       // console.log('allBook', allBook);
       allBook.map((book: any) => {
         if (book.id === args.bookId) {
           book.done = true;
           book.dirPath = args.path;
+          book.uuid = args.uuid;
+          book.filetype = args.filetype;
+          book.downloadTime = args.current;
         }
         return book;
       });

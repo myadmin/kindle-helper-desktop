@@ -33,7 +33,7 @@ const LocalStorage: FC = () => {
   useEffect(() => {
     // changeNewDir
     window.ipcRenderer.on('changeNewDir', (event, args) => {
-      console.log('args', args);
+      // console.log('args', args);
       if (args.length) {
         store.set('downloadPath', args[0]);
         form.setFieldsValue({
@@ -48,7 +48,7 @@ const LocalStorage: FC = () => {
       <Form.Item label="本地存储位置" name="path">
         <Input readOnly disabled />
       </Form.Item>
-      <Form.Item>
+      <Form.Item labelCol={{ span: 0 }} wrapperCol={{ span: 24 }} style={{ textAlign: 'right' }}>
         <Button onClick={handleChangePath} type="primary">修改存储路径</Button>
       </Form.Item>
     </Form>

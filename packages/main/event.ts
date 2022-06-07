@@ -1,7 +1,9 @@
 import { dialog, ipcMain, shell } from 'electron';
 import path from 'path';
 import dayjs from 'dayjs';
+import { v4 as uuidv4 } from 'uuid';
 import { search, searchDetail, parseUrl } from './search';
+import sendEmail from './utils/email';
 
 const fse = require('fs-extra');
 const dl = require('download-file-with-progressbar');
@@ -63,6 +65,8 @@ ipcMain.on('downloadBookFile', async (event, arg) => {
                 done: true,
                 path: filePath,
                 current: currentDay,
+                uuid: uuidv4(),
+                filetype: filename.split('.')[filename.split('.').length - 1],
             });
         },
         onError: (err: any) => {
@@ -99,4 +103,16 @@ ipcMain.on('openDir', async (event, args) => {
             // console.log('res', res);
             event.sender.send('changeNewDir', res.filePaths);
         });
+});
+
+// 发送邮件
+ipcMain.on('sendFileToKindle', async (event, args) => {
+    // console.log('args', args);
+    try {
+        const response = await sendEmail(args);
+        // console.log('sendFileToKindle', response);
+        event.sender.send('sendFileSuccess', response);
+    } catch (err) {
+        console.error('error', err);
+    }
 });
