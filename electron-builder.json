@@ -1,13 +1,13 @@
 {
-  "appId": "YourAppID",
-  "productName": "YourAppName",
+  "appId": "cn.toside.read.desktop",
+  "productName": "kindle-helper-desktop",
   "copyright": "Copyright © 2022 ${author}",
   "asar": true,
   "directories": {
     "output": "release/${version}",
     "buildResources": "resources"
   },
-  "files": ["dist"],
+  "files": ["dist/**/*", "node_modules/**/*", "package.json"],
   "win": {
     "target": [
       {
@@ -15,6 +15,7 @@
         "arch": ["x64"]
       }
     ],
+    "verifyUpdateCodeSignature": false,
     "artifactName": "${productName}-${version}-Setup.${ext}"
   },
   "nsis": {
@@ -24,11 +25,18 @@
     "deleteAppDataOnUninstall": false
   },
   "mac": {
-    "target": ["dmg"],
+    "target": ["dmg", "zip"],
     "artifactName": "${productName}-${version}-Installer.${ext}"
   },
   "linux": {
     "target": ["AppImage"],
     "artifactName": "${productName}-${version}-Installer.${ext}"
-  }
+  },
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "myadmin",
+      "repo": "KindleHelper"
+    }
+  ]
 }

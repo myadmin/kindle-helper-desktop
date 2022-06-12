@@ -1,4 +1,4 @@
-import { dialog, ipcMain, shell } from 'electron';
+import { dialog, ipcMain, shell, app } from 'electron';
 import path from 'path';
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
@@ -47,7 +47,7 @@ ipcMain.on('downloadBookFile', async (event, arg) => {
     // console.log('arg', arg);
     const { link: url, bookId, name: filename, size: filesize } = arg;
     const currentDay = dayjs().format('YYYY-MM-DD');
-    const dirPath = path.join(__dirname, `../../download/`);
+    const dirPath = path.join(app.getPath('userData'), 'download');
     const filePath = path.join(dirPath, currentDay);
     fse.ensureDirSync(filePath);
 

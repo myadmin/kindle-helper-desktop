@@ -44,7 +44,7 @@ async function createWindow() {
   }
 
   // 保存图书文件存储位置
-  const dirPath = join(__dirname, `../../download/`);
+  const dirPath = join(app.getPath('userData'), 'download');
   if (!store.get('downloadPath')) {
     store.set('downloadPath', dirPath);
   }
