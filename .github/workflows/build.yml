@@ -1,4 +1,4 @@
-name: Build/release
+name: Build
 
 on:
   push:
@@ -32,27 +32,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: read version
-        id: version
-        uses: ashley-taylor/read-json-property-action@v1.0
-        with:
-          path: ./package.json
-          property: version
-
       - name: Cleanup Artifacts for Windows
         if: matrix.os == 'windows-latest'
         run: |
-          npx rimraf "release/${steps.version}/!(*.exe)"
+          npx rimraf "build/!(*.exe)"
           
       - name: Cleanup Artifacts for MacOS
         if: matrix.os == 'macos-latest'
         run: |
-          npx rimraf "release/${steps.version}/!(*.dmg)"
+          npx rimraf "build/!(*.dmg)"
       
       - name: Cleanup Artifacts for Linux
         if: matrix.os == 'ubuntu-latest'
         run: |
-          npx rimraf "release/${steps.version}/!(*.AppImage)"
+          npx rimraf "build/!(*.AppImage)"
       
       - name: upload artifacts
         uses: actions/upload-artifact@v3.0.0
