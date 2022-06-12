@@ -16,6 +16,13 @@ jobs:
         os: [windows-latest, macos-latest, ubuntu-latest]
 
     steps:
+      - name: read version
+        id: version
+        uses: ashley-taylor/read-json-property-action@v1.0
+        with:
+          path: ../../package.json
+          property: version
+
       - name: Check out git repository
         uses: actions/checkout@v3.0.0
 
@@ -35,17 +42,17 @@ jobs:
       - name: Cleanup Artifacts for Windows
         if: matrix.os == 'windows-latest'
         run: |
-          npx rimraf "dist/!(*.exe)"
+          npx rimraf "release/${steps.version}/!(*.exe)"
           
       - name: Cleanup Artifacts for MacOS
         if: matrix.os == 'macos-latest'
         run: |
-          npx rimraf "dist/!(*.dmg)"
+          npx rimraf "release/${steps.version}/!(*.dmg)"
       
       - name: Cleanup Artifacts for Linux
         if: matrix.os == 'ubuntu-latest'
         run: |
-          npx rimraf "dist/!(*.AppImage)"
+          npx rimraf "release/${steps.version}/!(*.AppImage)"
       
       - name: upload artifacts
         uses: actions/upload-artifact@v3.0.0
