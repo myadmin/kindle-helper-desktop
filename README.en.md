@@ -5,7 +5,7 @@
 ![GitHub license](https://img.shields.io/github/license/caoxiemeihao/vite-react-electron?style=flat)
 [![Required Node.JS >= v14.17.0](https://img.shields.io/static/v1?label=node&message=%3E=14.17.0&logo=node.js&color=3f893e&style=flat)](https://nodejs.org/about/releases)
 
-**English | [简体中文](README.zh-CN.md)**
+**English | [简体中文](README.md)**
 
 ## Overview
 
