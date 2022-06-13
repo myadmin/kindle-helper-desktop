@@ -2,6 +2,7 @@ import { app, BrowserWindow, shell } from 'electron';
 import { release } from 'os';
 import { join } from 'path';
 import Store from 'electron-store'
+import updateChecker from './utils/updateChecker';
 import './event';
 
 import './samples/electron-store'
@@ -62,6 +63,10 @@ async function createWindow() {
 }
 
 app.whenReady().then(createWindow)
+
+app.on('ready', () => {
+  updateChecker();
+});
 
 app.on('window-all-closed', () => {
   win = null
