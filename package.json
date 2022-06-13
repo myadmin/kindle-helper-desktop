@@ -2,14 +2,17 @@
   "name": "kindle-helper-desktop",
   "productName": "kindle-helper-desktop",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "Vite React Electron boilerplate.",
   "author": "myadmin",
   "license": "MIT",
   "main": "dist/main/index.cjs",
   "scripts": {
     "dev": "node scripts/watch.mjs",
-    "build": "tsc --noEmit -p packages/renderer/tsconfig.json && node scripts/build.mjs && electron-builder"
+    "build": "tsc --noEmit -p packages/renderer/tsconfig.json && node scripts/build.mjs && electron-builder",
+    "patch": "npm version patch && git push origin develop && git push origin --tags",
+    "minor": "npm version minor && git push origin develop && git push origin --tags",
+    "major": "npm version major && git push origin develop && git push origin --tags"
   },
   "engines": {
     "node": ">=14.17.0"

@@ -7,7 +7,7 @@
     "output": "release",
     "buildResources": "resources"
   },
-  "files": ["dist/**/*", "node_modules/**/*", "package.json"],
+  "files": ["dist/**/*", "node_modules/", "package.json"],
   "win": {
     "target": [
       {
