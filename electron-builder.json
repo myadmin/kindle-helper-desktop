@@ -31,12 +31,5 @@
   "linux": {
     "target": ["AppImage"],
     "artifactName": "${productName}-${version}-Installer.${ext}"
-  },
-  "publish": [
-    {
-      "provider": "github",
-      "owner": "myadmin",
-      "repo": "KindleHelper"
-    }
-  ]
+  }
 }
