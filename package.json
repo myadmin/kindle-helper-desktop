@@ -2,7 +2,7 @@
   "name": "kindle-helper-desktop",
   "productName": "kindle-helper-desktop",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Vite React Electron boilerplate.",
   "author": "myadmin",
   "license": "MIT",
