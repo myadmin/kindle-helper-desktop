@@ -26,7 +26,7 @@ const store = new Store();
 async function createWindow() {
   win = new BrowserWindow({
     width: 880,
-    height: process.platform === 'win32' ? 670 : 580,
+    height: process.platform === 'win32' ? 600 : 580,
     title: 'Main window',
     resizable: false,
     webPreferences: {
