@@ -9,7 +9,7 @@
 
 ***搜索内容***
 ![2.png](https://github.com/myadmin/kindle-helper-desktop/blob/master/public/2.png?raw=true)
-
+点击弹窗中的图书标题，即可进入下载界面
 ![3.png](https://github.com/myadmin/kindle-helper-desktop/blob/master/public/3.png?raw=true)
 
 ***下载资源***
