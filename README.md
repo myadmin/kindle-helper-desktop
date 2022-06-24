@@ -2,7 +2,7 @@
 
 ## 基本介绍
 
-该软件基于React + Electron实现，能够搜索远程图书列表资源，并下载到本地。
+该软件基于React + Electron实现，能够搜索远程图书资源，并下载到本地。
 
 ***初始界面***
 ![1.png](https://github.com/myadmin/kindle-helper-desktop/blob/master/public/1.png?raw=true)
