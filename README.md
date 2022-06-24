@@ -4,6 +4,8 @@
 
 该软件基于React + Electron实现，能够搜索远程图书资源，并下载到本地。
 
+软件下载地址：[https://github.com/myadmin/kindle-helper-desktop/releases](https://github.com/myadmin/kindle-helper-desktop/releases)
+
 ***初始界面***
 ![1.png](https://github.com/myadmin/kindle-helper-desktop/blob/master/public/1.png?raw=true)
 
